@@ -53,7 +53,7 @@ const AddCoffee = ({ onFormSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>{language === 'ge' ? 'კოფის დამატება' : 'Add Coffee'}</h2>
+      <h1>{language === 'ge' ? 'კოფის დამატება' : 'Add Coffee'}</h1>
       {message && <p style={{ color: message.includes('successfully') ? 'green' : 'red' }}>{message}</p>}
       <input
         type="text"
@@ -84,7 +84,7 @@ const AddCoffee = ({ onFormSubmit }) => {
         cols="50"
         required
       />
-      <button type="submit">{language === 'ge' ? 'კოფის დამატება' : 'Add Coffee'}</button>
+      <button type="submit">{language === 'ge' ? 'დამატება' : 'Add'}</button>
     </form>
   );
 };
