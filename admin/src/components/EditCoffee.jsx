@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // useNavigate-ის იმპორტი
+import { useParams, useNavigate } from 'react-router-dom';
 import { getIngredients } from '../api';
 import { LanguageContext } from '../LanguageContext';
 
 const EditCoffee = ({ coffeeList, onFormSubmit }) => {
   const { coffeeId } = useParams();
-  const navigate = useNavigate(); // useNavigate-ის გამოყენება
+  const navigate = useNavigate();
   const coffee = coffeeList.find((coffee) => coffee.id === coffeeId) || {};
 
   const [title, setTitle] = useState(coffee.title || '');
@@ -41,13 +41,18 @@ const EditCoffee = ({ coffeeList, onFormSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!title || selectedIngredients.length === 0 || !description) {
+      alert(language === 'ge' ? 'გთხოვთ, შეავსოთ ყველა ველი და აირჩიოთ მინიმუმ ერთი ინგრედიენტი.' : 'Please fill in all fields and select at least one ingredient.');
+      return;
+    }
+
     const ingredientData = selectedIngredients.map(ingredient => ({
       name: ingredient.name,
       price: ingredient.price,
       description: ingredient.description,
     }));
 
-    // კონსოლში გამოყვანა ცვლილების შესახებ
     console.log('Updating coffee with the following data:');
     console.log('Coffee ID:', coffeeId);
     console.log('Title:', title);
@@ -55,7 +60,7 @@ const EditCoffee = ({ coffeeList, onFormSubmit }) => {
     console.log('Description:', description);
 
     onFormSubmit(coffeeId, { title, ingredients: ingredientData, description });
-    navigate('/coffees'); // /coffees-ზე გადამისამართება
+    navigate('/coffees');
   };
 
   return (
