@@ -33,8 +33,19 @@ const AddCoffee = ({ onFormSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || selectedIngredients.length === 0 || !description) {
-      setMessage(language === 'ge' ? 'გთხოვთ, შეავსოთ ყველა ველი და აირჩიოთ მინიმუმ ერთი ინგრედიენტი.' : 'Please fill in all fields and select at least one ingredient.');
+    
+    if (!title.trim()) {
+      setMessage(language === 'ge' ? 'გთხოვთ, შეიყვანეთ კოფის სახელი.' : 'Please enter the coffee title.');
+      return;
+    }
+
+    if (selectedIngredients.length === 0) {
+      setMessage(language === 'ge' ? 'გთხოვთ, აირჩიოთ მინიმუმ ერთი ინგრედიენტი.' : 'Please select at least one ingredient.');
+      return;
+    }
+
+    if (!description.trim()) {
+      setMessage(language === 'ge' ? 'გთხოვთ, შეიყვანეთ კოფის აღწერა.' : 'Please enter the coffee description.');
       return;
     }
 
