@@ -18,7 +18,7 @@ const IngredientList = ({ ingredientList, onDeleteIngredient }) => {
           <p>{language === 'ge' ? 'ფასი' : 'Price'}: {ingredient.price}</p>
           <p>{language === 'ge' ? 'აღწერა' : 'Description'}: {ingredient.description}</p>
           <Link to={`/edit-ingredient/${ingredient.id}`}>
-            {language === 'ge' ? 'ინგრედიენტის შეცვლა' : 'Edit Ingredient'}
+            {language === 'ge' ? 'შეცვლა' : 'Edit'}
           </Link>
           <button onClick={() => handleDelete(ingredient.id)}>
             {language === 'ge' ? 'წაშლა' : 'Delete'}
