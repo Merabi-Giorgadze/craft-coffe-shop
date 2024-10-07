@@ -37,7 +37,7 @@ const AddIngredient = ({ onFormSubmit }) => {
           value={description} 
           onChange={(e) => setDescription(e.target.value)} 
         />
-        <button type="submit">{language === 'ge' ? 'ინგრედიენტის დამატება' : 'Add Ingredient'}</button>
+        <button type="submit">{language === 'ge' ? 'დამატება' : 'Add'}</button>
       </form>
     </div>
   );
