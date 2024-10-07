@@ -11,6 +11,7 @@ const EditIngredient = ({ ingredientList, onFormSubmit }) => {
   const [name, setName] = useState(ingredientToEdit?.name || '');
   const [price, setPrice] = useState(ingredientToEdit?.price || '');
   const [description, setDescription] = useState(ingredientToEdit?.description || '');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!ingredientToEdit) {
@@ -20,6 +21,12 @@ const EditIngredient = ({ ingredientList, onFormSubmit }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (!name || !price || !description) {
+      setErrorMessage(language === 'ge' ? 'გთხოვთ, შეავსოთ ყველა ველი.' : 'Please fill in all fields.');
+      return;
+    }
+
     onFormSubmit(ingredientId, { name, price, description });
     navigate('/');
   };
@@ -46,6 +53,7 @@ const EditIngredient = ({ ingredientList, onFormSubmit }) => {
           value={description} 
           onChange={(e) => setDescription(e.target.value)} 
         />
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <button type="submit">{language === 'ge' ? 'შენახვა' : 'Save'}</button>
       </form>
     </div>
