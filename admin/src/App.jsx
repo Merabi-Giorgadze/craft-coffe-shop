@@ -10,6 +10,7 @@ import EditCoffee from './components/EditCoffee';
 import Header from './components/Header';
 import { getIngredients, addIngredient, editIngredient, deleteIngredient } from './api';
 import { getCoffees, addCoffee, editCoffee, deleteCoffee } from './coffeeapi';
+import './App.css';
 
 function App() {
   const [ingredientList, setIngredientList] = useState([]);
