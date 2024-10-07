@@ -1,55 +1,96 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // useNavigate-ის იმპორტი
+import { getIngredients } from '../api';
 import { LanguageContext } from '../LanguageContext';
 
-const EditIngredient = ({ ingredientList, onFormSubmit }) => {
-  const { language } = useContext(LanguageContext);
-  const { ingredientId } = useParams();
-  const navigate = useNavigate();
-  const ingredientToEdit = ingredientList.find((ingredient) => ingredient.id === ingredientId);
+const EditCoffee = ({ coffeeList, onFormSubmit }) => {
+  const { coffeeId } = useParams();
+  const navigate = useNavigate(); // useNavigate-ის გამოყენება
+  const coffee = coffeeList.find((coffee) => coffee.id === coffeeId) || {};
 
-  const [name, setName] = useState(ingredientToEdit?.name || '');
-  const [price, setPrice] = useState(ingredientToEdit?.price || '');
-  const [description, setDescription] = useState(ingredientToEdit?.description || '');
+  const [title, setTitle] = useState(coffee.title || '');
+  const [selectedIngredients, setSelectedIngredients] = useState(coffee.ingredients || []);
+  const [description, setDescription] = useState(coffee.description || '');
+  const [ingredientsList, setIngredientsList] = useState([]);
+  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
-    if (!ingredientToEdit) {
-      navigate('/');
-    }
-  }, [ingredientToEdit, navigate]);
+    getIngredients()
+      .then((data) => {
+        setIngredientsList(data.items);
 
-  const onSubmit = (e) => {
+        if (coffee.ingredients && coffee.ingredients.length > 0) {
+          const validSelectedIngredients = coffee.ingredients.filter(ingredient =>
+            data.items.some(item => item.name === ingredient.name)
+          );
+          setSelectedIngredients(validSelectedIngredients);
+        }
+      })
+      .catch((err) => console.error('Error fetching ingredients:', err));
+  }, [coffee.ingredients]);
+
+  const handleCheckboxChange = (ingredient) => {
+    if (selectedIngredients.some(item => item.name === ingredient.name)) {
+      setSelectedIngredients(
+        selectedIngredients.filter((selected) => selected.name !== ingredient.name)
+      );
+    } else {
+      setSelectedIngredients([...selectedIngredients, ingredient]);
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onFormSubmit(ingredientId, { name, price, description });
-    navigate('/');
+    const ingredientData = selectedIngredients.map(ingredient => ({
+      name: ingredient.name,
+      price: ingredient.price,
+      description: ingredient.description,
+    }));
+
+    // კონსოლში გამოყვანა ცვლილების შესახებ
+    console.log('Updating coffee with the following data:');
+    console.log('Coffee ID:', coffeeId);
+    console.log('Title:', title);
+    console.log('Ingredients:', ingredientData);
+    console.log('Description:', description);
+
+    onFormSubmit(coffeeId, { title, ingredients: ingredientData, description });
+    navigate('/coffees'); // /coffees-ზე გადამისამართება
   };
 
   return (
-    <div>
-      <h1>{language === 'ge' ? 'ინგრედიენტის შეცვლა' : 'Edit Ingredient'}</h1>
-      <form onSubmit={onSubmit}>
-        <input 
-          type="text" 
-          placeholder={language === 'ge' ? 'ინგრედიენტის სახელი' : 'Ingredient Name'} 
-          value={name} 
-          onChange={(e) => setName(e.target.value)} 
-        />
-        <input 
-          type="number" 
-          step="0.01" 
-          placeholder={language === 'ge' ? 'ფასი' : 'Price'} 
-          value={price} 
-          onChange={(e) => setPrice(e.target.value)} 
-        />
-        <textarea 
-          placeholder={language === 'ge' ? 'აღწერა' : 'Description'} 
-          value={description} 
-          onChange={(e) => setDescription(e.target.value)} 
-        />
-        <button type="submit">{language === 'ge' ? 'ინგრედიენტის შენახვა' : 'Save Ingredient'}</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h1>{language === 'ge' ? 'კოფის რედაქტირება' : 'Edit Coffee'}</h1>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder={language === 'ge' ? 'კოფის სახელი' : 'Coffee Title'}
+        required
+      />
+      <h3>{language === 'ge' ? 'აირჩიეთ ინგრედიენტები:' : 'Select Ingredients:'}</h3>
+      {ingredientsList.map((ingredient) => (
+        <div key={ingredient._uuid}>
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedIngredients.some(item => item.name === ingredient.name)}
+              onChange={() => handleCheckboxChange(ingredient)}
+            />
+            {ingredient.name} - {ingredient.price}
+            <p>{ingredient.description}</p>
+          </label>
+        </div>
+      ))}
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder={language === 'ge' ? 'აღწერა' : 'Description'}
+        required
+      />
+      <button type="submit">{language === 'ge' ? 'განახლება' : 'Update'}</button>
+    </form>
   );
 };
 
-export default EditIngredient;
+export default EditCoffee;
