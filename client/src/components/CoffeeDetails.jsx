@@ -1,4 +1,3 @@
-// CoffeeList.js
 import React, { useEffect, useState } from 'react';
 
 const API_KEY = 'iGFuqyt-C9IyswEhkqC6L2f29n8_vjr4qbtp3OMkm1fRIe2rZg';
