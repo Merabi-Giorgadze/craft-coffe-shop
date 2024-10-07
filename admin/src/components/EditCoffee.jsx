@@ -60,7 +60,7 @@ const EditCoffee = ({ coffeeList, onFormSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>{language === 'ge' ? 'კოფის რედაქტირება' : 'Edit Coffee'}</h2>
+      <h1>{language === 'ge' ? 'კოფის რედაქტირება' : 'Edit Coffee'}</h1>
       <input
         type="text"
         value={title}
@@ -88,7 +88,7 @@ const EditCoffee = ({ coffeeList, onFormSubmit }) => {
         placeholder={language === 'ge' ? 'აღწერა' : 'Description'}
         required
       />
-      <button type="submit">{language === 'ge' ? 'კოფის განახლება' : 'Update Coffee'}</button>
+      <button type="submit">{language === 'ge' ? 'განახლება' : 'Update'}</button>
     </form>
   );
 };
