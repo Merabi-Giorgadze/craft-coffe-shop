@@ -7,7 +7,7 @@ const CoffeeList = ({ coffeeList, onDeleteCoffee }) => {
 
   return (
     <div>
-      <h2>{language === 'ge' ? 'ყავის სია' : 'Coffee List'}</h2>
+      <h1>{language === 'ge' ? 'ყავის სია' : 'Coffee List'}</h1>
       <ul>
         {coffeeList.map((coffee) => (
           <li key={coffee.id}>
