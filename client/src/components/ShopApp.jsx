@@ -42,14 +42,13 @@ const ShopApp = ({ selectedCoffee }) => {
     if (selectedCoffee) {
       fetchIngredients();
     } else {
-      // Automatically navigate to '/' if no selected coffee
       navigate('/');
     }
   }, [selectedCoffee, navigate]);
 
   useEffect(() => {
     const calculateTotalPrice = () => {
-      const basePrice = 2; // базовая цена (лари)
+      const basePrice = 2;
       let ingredientTotal = 0;
 
       Object.keys(selectedIngredients).forEach((ingredientName) => {
