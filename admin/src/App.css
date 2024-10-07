@@ -1,8 +1,8 @@
 body {
-  background-image: url('components/body.jpg'); /* ფონური სურათი */
-  background-size: cover; /* ფონური სურათის ზომის რეგულირება */
-  background-repeat: no-repeat; /* ფონური სურათის გამეორება */
-  background-position: center; /* ფონური სურათის ცენტრში განლაგება */
+  background-image: url('components/body.jpg');
+  background-size: cover;
+  background-repeat: no-repeat
+  background-position: center;
   height: 100vh;
 }
 header {
@@ -160,11 +160,11 @@ ul, ol {
 }
 
 #root > form > div > label > input {
-  width: 20px; /* სიგანე */
-  height: 20px; /* სიმაღლე */
-  accent-color: #23d80b; /* Checkbox-ის ფერი (თანამედროვე ბრაუზერებისთვის) */
-  cursor: pointer; /* მაუსის კურსორის შეცვლა */
-  margin-right: 10px; /* მარჯვენა მარჟინის რეგულირება */
+  width: 20px;
+  height: 20px;
+  accent-color: #23d80b;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 #root > form > button{
