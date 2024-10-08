@@ -65,7 +65,7 @@ const ShopApp = ({ selectedCoffee }) => {
     };
 
     calculateTotalPrice();
-  }, [selectedIngredients, ingredients]);
+  }, [selectedIngredients, ingredients, currency]);
 
   const handleIngredientChange = (ingredientName) => {
     setSelectedIngredients((prev) => ({
@@ -94,7 +94,8 @@ const ShopApp = ({ selectedCoffee }) => {
   };
 
   const getIngredientPrice = (price) => {
-    return currency === '₾' ? parseFloat(price).toFixed(2) : (price / EXCHANGE_RATE).toFixed(2);
+    const priceInLocalCurrency = currency === '₾' ? price : price / EXCHANGE_RATE;
+    return parseFloat(priceInLocalCurrency).toFixed(2);
   };
 
   if (!selectedCoffee) {
@@ -123,7 +124,7 @@ const ShopApp = ({ selectedCoffee }) => {
       <h2>სულ გადასახდელი: {totalPrice.toFixed(2)}{currency}</h2>
 
       <button onClick={toggleCurrency}>
-       {currency === '₾' ? '$' : '₾'}
+        {currency === '₾' ? '$' : '₾'}
       </button>
 
       <button onClick={handleBuy}>ყიდვა</button>
