@@ -9,7 +9,7 @@ const ShopApp = ({ selectedCoffee }) => {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState({});
   const [description, setDescription] = useState('');
-  const [basePrice, setBasePrice] = useState(2);
+  const [basePrice] = useState(2);
   const [currency, setCurrency] = useState('₾');
   const navigate = useNavigate();
 
