@@ -9,7 +9,7 @@ const ShopApp = ({ selectedCoffee }) => {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState({});
   const [description, setDescription] = useState('');
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [basePrice, setBasePrice] = useState(2);
   const [currency, setCurrency] = useState('₾');
   const navigate = useNavigate();
 
@@ -46,26 +46,26 @@ const ShopApp = ({ selectedCoffee }) => {
     }
   }, [selectedCoffee, navigate]);
 
-  useEffect(() => {
-    const calculateTotalPrice = () => {
-      const basePrice = 2;
-      let ingredientTotal = 0;
+  const calculateTotalPrice = () => {
+    let ingredientTotal = 0;
 
-      Object.keys(selectedIngredients).forEach((ingredientName) => {
-        if (selectedIngredients[ingredientName]) {
-          const ingredient = ingredients.find(ing => ing.name === ingredientName);
-          if (ingredient) {
-            ingredientTotal += parseFloat(ingredient.price);
-          }
+    Object.keys(selectedIngredients).forEach((ingredientName) => {
+      if (selectedIngredients[ingredientName]) {
+        const ingredient = ingredients.find(ing => ing.name === ingredientName);
+        if (ingredient) {
+          ingredientTotal += parseFloat(ingredient.price);
         }
-      });
+      }
+    });
 
-      const total = basePrice + ingredientTotal;
-      setTotalPrice(total);
-    };
+    let total = basePrice + ingredientTotal;
 
-    calculateTotalPrice();
-  }, [selectedIngredients, ingredients, currency]);
+    if (currency === '$') {
+      total = total / EXCHANGE_RATE;
+    }
+
+    return total.toFixed(2);
+  };
 
   const handleIngredientChange = (ingredientName) => {
     setSelectedIngredients((prev) => ({
@@ -75,22 +75,12 @@ const ShopApp = ({ selectedCoffee }) => {
   };
 
   const handleBuy = () => {
-    alert(`შენ იყიდე ${selectedCoffee.name} ${totalPrice.toFixed(2)}${currency}-ად`);
+    alert(`შენ იყიდე ${selectedCoffee.name} ${calculateTotalPrice()}${currency}-ად`);
     navigate('/');
   };
 
   const toggleCurrency = () => {
-    let newTotalPrice;
-
-    if (currency === '₾') {
-      setCurrency('$');
-      newTotalPrice = totalPrice / EXCHANGE_RATE;
-    } else {
-      setCurrency('₾');
-      newTotalPrice = totalPrice * EXCHANGE_RATE;
-    }
-
-    setTotalPrice(parseFloat(newTotalPrice.toFixed(2)));
+    setCurrency((prevCurrency) => (prevCurrency === '₾' ? '$' : '₾'));
   };
 
   const getIngredientPrice = (price) => {
@@ -121,7 +111,7 @@ const ShopApp = ({ selectedCoffee }) => {
         </div>
       ))}
 
-      <h2>სულ გადასახდელი: {totalPrice.toFixed(2)}{currency}</h2>
+      <h2>სულ გადასახდელი: {calculateTotalPrice()}{currency}</h2>
 
       <button onClick={toggleCurrency}>
         {currency === '₾' ? '$' : '₾'}
